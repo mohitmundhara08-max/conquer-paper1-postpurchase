@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UGC NET Paper 1 — Diagnostic Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#080810;--bg2:#0f0f1e;--bg3:#161628;
+  --gold:#e8a020;--gold2:#f5c055;--crimson:#e05050;
+  --teal:#3abfb1;--violet:#8b6fd4;--text:#e8e4d8;
+  --muted:#7a7590;--border:rgba(232,160,32,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body.hindi{font-family:'Tiro Devanagari Hindi','IBM Plex Sans',sans-serif;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(232,160,32,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(232,160,32,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+.page{position:relative;z-index:1;}
+.hidden{display:none!important;}
+
+/* ── LANG ── */
+.lang-toggle{position:fixed;top:18px;right:20px;z-index:999;display:flex;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:4px;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+.lang-btn{padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);letter-spacing:.5px;font-family:'IBM Plex Sans',sans-serif;}
+.lang-btn.active{background:var(--gold);color:#1a0e00;}
+
+/* ── HOME ── */
+#home{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 80px;}
+.home-header{text-align:center;margin-bottom:44px;}
+.badge{display:inline-block;background:rgba(232,160,32,.12);border:1px solid var(--border);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:100px;margin-bottom:20px;}
+.home-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.4rem);line-height:1.15;color:#fff;margin-bottom:14px;}
+.home-sub{color:var(--muted);font-size:15px;font-weight:300;max-width:520px;line-height:1.75;margin:0 auto;}
+.single-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:520px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.single-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s;}
+.single-card:hover{border-color:rgba(232,160,32,.45);transform:translateY(-5px);box-shadow:0 24px 70px rgba(0,0,0,.6);}
+.single-card:hover::before{opacity:1;}
+.card-icon{width:58px;height:58px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:22px;}
+.card-name{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:12px;line-height:1.3;}
+.card-desc{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:20px;}
+.card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.tag{font-size:11px;font-weight:500;padding:5px 12px;border-radius:100px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid rgba(255,255,255,.08);}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border:none;transition:all .2s;text-decoration:none;}
+.btn-gold{background:var(--gold);color:#1a0e00;}
+.btn-gold:hover{background:var(--gold2);transform:scale(1.03);}
+
+/* ── QUIZ ── */
+#quiz{min-height:100vh;padding:28px 20px 60px;max-width:740px;margin:0 auto;}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.quiz-unit-lbl{font-size:11px;color:var(--gold);font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.quiz-unit-name{font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-top:2px;}
+.progress-bar-wrap{margin-bottom:20px;}
+.progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.progress-bar{height:4px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:100px;transition:width .4s ease;}
+.dot-row{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap;}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--bg3);border:1px solid rgba(255,255,255,.1);transition:all .3s;}
+.dot.answered-dot{background:rgba(232,160,32,.5);border-color:var(--gold);}
+.dot.correct-dot{background:#2ecc71;border-color:#2ecc71;}
+.dot.wrong-dot{background:var(--crimson);border-color:var(--crimson);}
+.question-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:20px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.passage-box{background:var(--bg3);border-left:3px solid var(--gold);padding:14px 18px;border-radius:0 8px 8px 0;font-size:14px;line-height:1.85;color:#cbc8be;margin-bottom:22px;}
+.di-table-box{background:var(--bg3);border:1px solid rgba(58,191,177,.2);border-radius:8px;padding:14px 18px;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.8;color:var(--teal);margin-bottom:22px;white-space:pre;overflow-x:auto;}
+.q-text{font-size:16px;line-height:1.7;color:var(--text);margin-bottom:22px;}
+.options{display:flex;flex-direction:column;gap:11px;}
+.opt-btn{display:flex;align-items:center;gap:12px;padding:13px 16px;background:var(--bg3);border:1px solid rgba(255,255,255,.07);border-radius:10px;cursor:pointer;transition:all .2s;text-align:left;width:100%;}
+.opt-btn:hover{border-color:rgba(232,160,32,.35);background:rgba(232,160,32,.04);}
+.opt-btn.selected{border-color:var(--gold);background:rgba(232,160,32,.1);}
+.opt-btn.selected .opt-letter{background:var(--gold);color:#1a0e00;}
+.opt-letter{width:28px;height:28px;flex-shrink:0;background:rgba(255,255,255,.06);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--muted);font-family:'IBM Plex Mono',monospace;transition:all .2s;}
+.opt-text{font-size:14px;color:var(--text);line-height:1.5;}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;}
+.q-counter{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:14px;cursor:pointer;transition:color .2s;background:none;border:none;font-family:'IBM Plex Sans',sans-serif;margin-bottom:24px;}
+.back-btn:hover{color:var(--gold);}
+
+/* ── RESULTS ── */
+#results{min-height:100vh;padding:40px 20px 80px;max-width:880px;margin:0 auto;}
+.results-title{font-family:'Playfair Display',serif;font-size:1.9rem;color:#fff;margin-bottom:8px;}
+.results-sub{color:var(--muted);font-size:14px;margin-bottom:36px;}
+.score-hero{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.score-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 22px;text-align:center;min-width:120px;}
+.score-val{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;line-height:1;}
+.score-lbl{font-size:11px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:1px;}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+@media(max-width:620px){.results-grid{grid-template-columns:1fr;}}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:center;}
+.chart-title{font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:18px;align-self:flex-start;}
+.breakdown-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:24px;}
+.unit-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.unit-row:last-child{border-bottom:none;}
+.unit-name{font-size:12px;font-weight:500;flex:1;color:var(--text);min-width:80px;}
+.unit-score{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);min-width:28px;text-align:right;}
+.unit-bar-wrap{flex:2;height:5px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.unit-bar{height:100%;border-radius:100px;transition:width 1s ease;}
+.weak-tag{font-size:10px;padding:2px 7px;border-radius:100px;background:rgba(224,80,80,.15);color:var(--crimson);border:1px solid rgba(224,80,80,.3);white-space:nowrap;}
+.strong-tag{font-size:10px;padding:2px 7px;border-radius:100px;background:rgba(46,204,113,.12);color:#2ecc71;border:1px solid rgba(46,204,113,.25);white-space:nowrap;}
+.weakness-alert{border-radius:14px;padding:22px 26px;margin-bottom:24px;}
+.weakness-alert h3{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.weakness-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.weakness-list li{font-size:14px;color:var(--text);display:flex;align-items:flex-start;gap:10px;line-height:1.6;}
+.weakness-list li::before{content:'→';color:var(--crimson);flex-shrink:0;}
+
+/* ── STRATEGY + ACTION PLAN (merged) ── */
+.section-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px 26px;margin-bottom:24px;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6;}
+.action-list{list-style:none;display:flex;flex-direction:column;gap:14px;}
+.action-item{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;border-left:3px solid var(--muted);}
+.action-item.high{border-left-color:var(--crimson);background:rgba(224,80,80,.05);}
+.action-item.medium{border-left-color:var(--gold);background:rgba(232,160,32,.04);}
+.action-item.maintain{border-left-color:#2ecc71;background:rgba(46,204,113,.04);}
+.action-rank{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);font-weight:700;line-height:1;min-width:32px;}
+.action-body{flex:1;}
+.action-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+.action-name{font-size:14px;font-weight:600;color:#fff;}
+.action-pill{font-size:9.5px;padding:3px 9px;border-radius:100px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.action-pill.high{background:rgba(224,80,80,.15);color:var(--crimson);border:1px solid rgba(224,80,80,.3);}
+.action-pill.medium{background:rgba(232,160,32,.15);color:var(--gold);border:1px solid rgba(232,160,32,.3);}
+.action-pill.maintain{background:rgba(46,204,113,.12);color:#2ecc71;border:1px solid rgba(46,204,113,.25);}
+.action-score{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.action-strategy{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:6px;}
+.action-tip{font-size:12px;color:var(--muted);line-height:1.6;font-style:italic;}
+
+/* ── FINAL CTA ── */
+.cta-box{background:linear-gradient(135deg,rgba(232,160,32,.13),rgba(245,192,85,.06));border:1px solid rgba(232,160,32,.35);border-radius:20px;padding:36px 28px;text-align:center;margin-bottom:20px;}
+.cta-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:10px;line-height:1.3;}
+.cta-sub{color:var(--muted);font-size:13.5px;line-height:1.7;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto;}
+.cta-btn{display:inline-block;padding:16px 38px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a0e00;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:all .2s;letter-spacing:.3px;text-decoration:none;}
+.cta-btn:hover{transform:scale(1.04);box-shadow:0 10px 30px rgba(232,160,32,.35);}
+
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btnHI" onclick="setLang('hi')">हिं</button>
+</div>
+
+<!-- ══ HOME ══ -->
+<div id="home" class="page">
+  <div class="home-header">
+    <div class="badge">UGC NET Paper 1 — All 10 Units</div>
+    <h1 class="home-title">Know Your Weaknesses.<br><span style="color:var(--gold);font-style:italic">Conquer Paper 1.</span></h1>
+    <p class="home-sub" id="lHomeSub"></p>
+  </div>
+  <div class="single-card" onclick="startQuiz()">
+    <div class="card-icon">🎯</div>
+    <h2 class="card-name" id="lCardName"></h2>
+    <p class="card-desc" id="lCardDesc"></p>
+    <div class="card-tags" id="lCardTags"></div>
+    <button class="btn btn-gold" id="lCardBtn" onclick="event.stopPropagation();startQuiz()"></button>
+  </div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div id="quiz" class="page hidden">
+  <button class="back-btn" id="backBtnQuiz" onclick="goHome()"></button>
+  <div class="quiz-top">
+    <div>
+      <div class="quiz-unit-lbl" id="qUnitKey"></div>
+      <div class="quiz-unit-name" id="qUnitLabel"></div>
+    </div>
+  </div>
+  <div class="dot-row" id="dotRow"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-info"><span id="progressText"></span><span id="progressPct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="question-card">
+    <div id="passageArea"></div>
+    <div id="diTableArea"></div>
+    <p class="q-text" id="qText"></p>
+    <div class="options" id="optionsArea"></div>
+  </div>
+  <div class="quiz-nav">
+    <span class="q-counter" id="qCounter"></span>
+    <button class="btn btn-gold hidden" id="nextBtn" onclick="nextQuestion()"></button>
+  </div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="results" class="page hidden">
+  <h1 class="results-title" id="resultsTitle"></h1>
+  <p class="results-sub" id="resultsSub"></p>
+
+  <!-- 1. Score cards -->
+  <div class="score-hero">
+    <div class="score-card">
+      <div class="score-val" style="color:var(--gold)" id="scoreCorrect">—</div>
+      <div class="score-lbl" id="lblCorrect"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-val" style="color:var(--crimson)" id="scoreWrong">—</div>
+      <div class="score-lbl" id="lblIncorrect"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-val" style="color:var(--teal)" id="scorePct">—</div>
+      <div class="score-lbl" id="lblAccuracy"></div>
+    </div>
+  </div>
+
+  <!-- 2. Radar + Breakdown -->
+  <div class="results-grid">
+    <div class="chart-card">
+      <div class="chart-title" id="lblRadar"></div>
+      <canvas id="radarChart" width="260" height="260"></canvas>
+    </div>
+    <div class="breakdown-card">
+      <div class="chart-title" id="lblBreakdown"></div>
+      <div id="breakdownList"></div>
+    </div>
+  </div>
+
+  <!-- 3. Weak Zones -->
+  <div id="weaknessAlert" class="weakness-alert"></div>
+
+  <!-- 4. 45+ Marks Strategy (merged with personalised action plan) -->
+  <div class="section-card">
+    <h2 class="section-title" id="strategyTitle"></h2>
+    <p class="section-sub" id="strategySub"></p>
+    <ul class="action-list" id="actionList"></ul>
+  </div>
+
+  <!-- 5. Final CTA -->
+  <div class="cta-box">
+    <h2 class="cta-title" id="ctaTitle"></h2>
+    <p class="cta-sub" id="ctaSub"></p>
+    <a class="cta-btn" id="ctaBtn" href="https://testbook.com/" target="_blank" rel="noopener noreferrer"></a>
+  </div>
+</div>
+
+<script>
+/* ─── TRANSLATIONS ──────────────────────────── */
+const T={
+  en:{
+    homeSub:"A 10-question diagnostic across all Paper 1 units — RC passage and DI table included. Find your exact weak zones. Target: 45+ marks.",
+    cardName:"Paper 1 Full Diagnostic",
+    cardDesc:"10 questions covering all 10 UGC NET Paper 1 units, from Teaching Aptitude to Higher Education — includes a live Reading Comprehension passage and Data Interpretation table.",
+    cardTags:["10 Questions","All 10 Units","RC Passage","DI Table","~7 mins"],
+    cardBtn:"Begin Diagnosis →",
+    back:"← Back",
+    nextBtn:"Next →",
+    resultsTitle:"Your Diagnostic Report",
+    lblCorrect:"Correct",lblIncorrect:"Incorrect",lblAccuracy:"Accuracy",
+    lblRadar:"Performance Radar",lblBreakdown:"Unit Breakdown",
+    weakTitle:"⚠ Weak Zones Identified",
+    noWeak:"✅ No major weaknesses! Strong performance across all units.",
+    unitOf:"Unit",unitOfSuffix:"of 10",qOf:"Question",qOfSuffix:"of",
+    subHigh:"🎉 Excellent! You're on track for 45+ marks. Review your action plan below.",
+    subMid:"📈 Decent attempt — focused work on weak zones can push you past 45. See your action plan below.",
+    subLow:"⚠ Significant gaps found. Follow your personalised study plan below to recover.",
+    unitLabels:["Teaching Aptitude","Research Aptitude","Reading Comprehension","Communication","Mathematical Reasoning","Logical Reasoning","Data Interpretation","ICT","People & Environment","Higher Education"],
+    unitShort:["Teach","Research","RC","Comm","Math","Logic","DI","ICT","Env","HiEdu"],
+    weakTag:"Weak",strongTag:"Strong",overallLabel:"Overall",
+    strategyTitle:"🎯 45+ Marks Strategy",
+    strategySub:"Your personalised study plan — units ranked from highest to lowest priority based on your diagnostic results. Focus your energy on red items first.",
+    priHigh:"High Priority",priMed:"Medium Priority",priMaintain:"Maintain",
+    ctaTitle:"Ready to score 45+ in UGC NET Paper 1?",
+    ctaSub:"Get full-length tests, video lessons, and structured courses for every unit. Start your preparation with India's leading test platform.",
+    ctaBtn:"Start Your Paper 1 Preparation Now →",
+    actionTips:{
+      teaching:{strat:"Bloom's Taxonomy + 5 teaching methods = ~3 marks every year.",tip:"Memorise 6 cognitive levels with action verbs. Drill 20 PYQs."},
+      research:{strat:"Research types + sampling definitions = ~4 marks. NTA repeats exact terminology.",tip:"Build a 2×2 matrix of research types. Flashcard sampling methods."},
+      comprehension:{strat:"1 passage with 5 Qs every paper. Inference Qs are the highest scoring.",tip:"Practice 1 editorial daily, timed under 3 minutes. Read questions first."},
+      communication:{strat:"Shannon-Weaver model + 4 barriers = ~4 guaranteed marks.",tip:"Draw the model 5 times until automatic. Make a 4-barrier comparison table."},
+      mathematical:{strat:"Series + averages + percentages = 80% of NTA math questions.",tip:"Drill 10 series problems daily using d1/d2 difference method."},
+      logical:{strat:"Syllogism (2 Qs guaranteed) + Venn diagrams = 3-4 marks.",tip:"Master 4 Aristotelian rules. Always draw diagrams — never solve mentally."},
+      data:{strat:"% change is the #1 question type. 1 set per paper, always.",tip:"Formula: [(New−Old)/Old]×100. Practice 1 full DI set daily."},
+      ict:{strat:"Highest marks-per-study-hour ratio. Cyber security + e-learning = ~4 marks.",tip:"Flashcard 30 ICT terms: phishing, malware, firewall, LMS, MOOC, SWAYAM."},
+      environment:{strat:"Brundtland definition + 17 SDGs + India env acts = ~4 marks.",tip:"Anchor 4 dates: Stockholm 1972, Rio 1992, Kyoto 1997, Paris 2015."},
+      highered:{strat:"Highest ROI unit. UGC + NAAC + NEP 2020 = ~5 marks.",tip:"Memorise UGC Act 1956 + NEP 2020: 5+3+3+4 structure, ABC, GER 50%."}
+    }
+  },
+  hi:{
+    homeSub:"सभी Paper 1 यूनिट्स पर 10 प्रश्न — RC गद्यांश और DI टेबल सहित। अपनी कमज़ोर यूनिट्स जानें। लक्ष्य: 45+ अंक।",
+    cardName:"Paper 1 पूर्ण डायग्नोस्टिक",
+    cardDesc:"UGC NET Paper 1 के सभी 10 यूनिट्स पर 10 प्रश्न — शिक्षण अभिवृत्ति से उच्च शिक्षा तक — RC गद्यांश और DI टेबल सहित।",
+    cardTags:["10 प्रश्न","सभी 10 यूनिट","RC गद्यांश","DI टेबल","~7 मिनट"],
+    cardBtn:"डायग्नोसिस शुरू करें →",
+    back:"← वापस",
+    nextBtn:"अगला →",
+    resultsTitle:"आपकी डायग्नोस्टिक रिपोर्ट",
+    lblCorrect:"सही",lblIncorrect:"गलत",lblAccuracy:"सटीकता",
+    lblRadar:"प्रदर्शन रडार",lblBreakdown:"यूनिट विश्लेषण",
+    weakTitle:"⚠ कमज़ोर क्षेत्र चिन्हित",
+    noWeak:"✅ कोई बड़ी कमज़ोरी नहीं! उत्कृष्ट प्रदर्शन।",
+    unitOf:"यूनिट",unitOfSuffix:"में से 10",qOf:"प्रश्न",qOfSuffix:"में से",
+    subHigh:"🎉 बेहतरीन! आप 45+ अंक की राह पर हैं। नीचे अपना एक्शन प्लान देखें।",
+    subMid:"📈 ठीक-ठाक। कमज़ोर यूनिट्स पर काम करके 45+ तक पहुँच सकते हैं।",
+    subLow:"⚠ महत्वपूर्ण कमियाँ मिली हैं। नीचे अपनी व्यक्तिगत स्टडी प्लान का पालन करें।",
+    unitLabels:["शिक्षण अभिवृत्ति","अनुसंधान अभिवृत्ति","पठन-बोध","संचार","गणितीय तर्क","तार्किक तर्क","डेटा व्याख्या","ICT","पर्यावरण व विकास","उच्च शिक्षा"],
+    unitShort:["शिक्षण","अनुसंधान","RC","संचार","गणित","तर्क","DI","ICT","पर्यावरण","उच्च शिक्षा"],
+    weakTag:"कमज़ोर",strongTag:"मज़बूत",overallLabel:"कुल",
+    strategyTitle:"🎯 45+ अंकों की रणनीति",
+    strategySub:"आपकी व्यक्तिगत अध्ययन योजना — आपके परिणामों के आधार पर यूनिट्स को प्राथमिकता क्रम में रखा गया है। पहले लाल यूनिट्स पर ध्यान दें।",
+    priHigh:"उच्च प्राथमिकता",priMed:"मध्यम प्राथमिकता",priMaintain:"बनाए रखें",
+    ctaTitle:"UGC NET Paper 1 में 45+ अंक पाने के लिए तैयार हैं?",
+    ctaSub:"पूर्ण-लंबाई के टेस्ट, वीडियो पाठ और हर यूनिट के लिए संरचित कोर्स प्राप्त करें। भारत के अग्रणी टेस्ट प्लेटफॉर्म के साथ अपनी तैयारी शुरू करें।",
+    ctaBtn:"अभी अपनी पेपर 1 की तैयारी शुरू करें →",
+    actionTips:{
+      teaching:{strat:"ब्लूम का वर्गीकरण + 5 शिक्षण विधियाँ = हर साल ~3 अंक।",tip:"6 संज्ञानात्मक स्तर क्रिया शब्दों के साथ याद करें। 20 PYQs हल करें।"},
+      research:{strat:"अनुसंधान प्रकार + नमूनाकरण परिभाषाएं = ~4 अंक। NTA सटीक शब्दावली दोहराता है।",tip:"अनुसंधान प्रकारों का 2×2 मैट्रिक्स बनाएं। नमूनाकरण विधियों के फ्लैशकार्ड बनाएं।"},
+      comprehension:{strat:"हर पेपर में 1 गद्यांश के साथ 5 प्रश्न। निहितार्थ प्रश्न सबसे अधिक स्कोरिंग हैं।",tip:"प्रतिदिन 1 संपादकीय 3 मिनट में पढ़ें। पहले प्रश्न पढ़ें।"},
+      communication:{strat:"Shannon-Weaver मॉडल + 4 बाधाएं = ~4 निश्चित अंक।",tip:"मॉडल 5 बार बनाएं जब तक स्वचालित न हो जाए। 4-बाधा तुलना तालिका बनाएं।"},
+      mathematical:{strat:"श्रृंखला + औसत + प्रतिशत = NTA गणित प्रश्नों का 80%।",tip:"d1/d2 अंतर विधि का उपयोग करके प्रतिदिन 10 श्रृंखला समस्याएं हल करें।"},
+      logical:{strat:"न्यायवाक्य (2 प्रश्न निश्चित) + वेन आरेख = 3-4 अंक।",tip:"4 अरस्तू नियमों में महारत हासिल करें। हमेशा आरेख बनाएं।"},
+      data:{strat:"% परिवर्तन सबसे आम प्रश्न प्रकार है। हर पेपर में 1 सेट।",tip:"सूत्र: [(नया−पुराना)/पुराना]×100। प्रतिदिन 1 पूर्ण DI सेट करें।"},
+      ict:{strat:"प्रति अध्ययन घंटे सबसे अधिक अंक। साइबर सुरक्षा + ई-लर्निंग = ~4 अंक।",tip:"30 ICT शब्दों के फ्लैशकार्ड: फिशिंग, मैलवेयर, फायरवॉल, LMS, MOOC, SWAYAM।"},
+      environment:{strat:"ब्रंटलैंड परिभाषा + 17 SDGs + भारत के पर्यावरण कानून = ~4 अंक।",tip:"4 तिथियाँ: स्टॉकहोम 1972, रियो 1992, क्योटो 1997, पेरिस 2015।"},
+      highered:{strat:"सबसे अधिक ROI यूनिट। UGC + NAAC + NEP 2020 = ~5 अंक।",tip:"UGC अधिनियम 1956 + NEP 2020: 5+3+3+4 संरचना, ABC, GER 50% याद करें।"}
+    }
+  }
+};
+
+/* ─── QUESTION BANK ─────────────────────────── */
+const QB={
+  en:[
+    {key:'teaching',q:"Which teaching method guides students toward knowledge through systematic questioning and their own reasoning, rather than direct instruction?",opts:["Lecture Method","Socratic Method","Demonstration Method","Drill and Practice"],ans:1},
+    {key:'research',q:"A hypothesis in research is best described as:",opts:["A proven scientific fact","A tentative statement subject to empirical testing","A conclusion drawn from published data","A final research methodology"],ans:1},
+    {key:'comprehension',passage:"Education is not merely the acquisition of knowledge but the ability to think, reason, and apply that knowledge in real-world contexts. Aristotle believed that the purpose of education is to make individuals virtuous, capable of living and working together in society. Modern educators argue that education must adapt to a rapidly changing world, emphasising critical thinking, creativity, and collaboration. Without these competencies, graduates may find themselves ill-equipped to handle the complex challenges of the 21st century.",q:"According to the passage, what was the primary focus of Aristotle's view on education?",opts:["Acquiring maximum knowledge","Making individuals virtuous and capable of social living","Developing creativity and collaboration","Adapting education to a rapidly changing world"],ans:1},
+    {key:'communication',q:"The process of converting a message into symbols, words, or gestures before transmission is called:",opts:["Decoding","Feedback","Encoding","Channel selection"],ans:2},
+    {key:'mathematical',q:"What is the next number in the series: 2, 6, 12, 20, 30, ___?",opts:["40","42","44","48"],ans:1},
+    {key:'logical',q:"All roses are flowers. Some flowers fade quickly. Which conclusion definitely follows?",opts:["All roses fade quickly","Some roses fade quickly","No roses fade quickly","None of the above can be conclusively determined"],ans:3},
+    {key:'data',diTable:"Course Enrolments (No. of Students):\n\n  Year   | Course A | Course B | Course C\n  -------|----------|----------|---------\n  2021   |   200    |   150    |   100\n  2022   |   240    |   180    |   130\n  2023   |   300    |   210    |   170",q:"Which course showed the highest percentage increase in enrolment from 2021 to 2023?",opts:["Course A — 50%","Course B — 40%","Course C — 70%","All increased equally"],ans:2},
+    {key:'ict',q:"What does 'phishing' refer to in the context of internet security?",opts:["Unauthorized access to computer files","Fraudulent attempts to obtain sensitive information","Overloading a server with traffic requests","Installing spyware through a USB device"],ans:1},
+    {key:'environment',q:"The Brundtland Commission (1987) defined sustainable development as meeting the needs of the present without compromising the ability of ___ to meet their own needs.",opts:["future generations","developed nations","natural ecosystems","current urban populations"],ans:0},
+    {key:'highered',q:"Which body in India is responsible for the maintenance of standards, release of grants, and coordination of university education?",opts:["AICTE","NCTE","UGC","NAAC"],ans:2}
+  ],
+  hi:[
+    {key:'teaching',q:"कौन सी शिक्षण विधि व्यवस्थित प्रश्नों के माध्यम से छात्रों को स्वयं के तर्क से ज्ञान की ओर ले जाती है?",opts:["व्याख्यान विधि","सुकराती विधि","प्रदर्शन विधि","ड्रिल विधि"],ans:1},
+    {key:'research',q:"अनुसंधान में परिकल्पना को सबसे उचित रूप में किस प्रकार परिभाषित किया जाता है?",opts:["एक सिद्ध वैज्ञानिक तथ्य","एक अस्थायी कथन जिसे परीक्षण के अधीन किया जाता है","प्रकाशित डेटा से निकाला गया निष्कर्ष","एक अंतिम शोध पद्धति"],ans:1},
+    {key:'comprehension',passage:"शिक्षा केवल ज्ञान का अर्जन नहीं है, बल्कि सोचने, तर्क करने और उस ज्ञान को वास्तविक परिस्थितियों में लागू करने की क्षमता है। अरस्तू का मानना था कि शिक्षा का उद्देश्य व्यक्तियों को सदाचारी बनाना है।",q:"गद्यांश के अनुसार, अरस्तू का शिक्षा पर मुख्य दृष्टिकोण क्या था?",opts:["अधिकतम ज्ञान अर्जित करना","व्यक्तियों को सदाचारी और सामाजिक जीवन के योग्य बनाना","रचनात्मकता और सहयोग विकसित करना","शिक्षा को बदलती दुनिया के अनुकूल बनाना"],ans:1},
+    {key:'communication',q:"किसी संदेश को प्रतीकों, शब्दों या हाव-भाव में बदलकर भेजने की प्रक्रिया को क्या कहते हैं?",opts:["डिकोडिंग","फीडबैक","एन्कोडिंग","चैनल चयन"],ans:2},
+    {key:'mathematical',q:"श्रृंखला में अगली संख्या क्या होगी: 2, 6, 12, 20, 30, ___?",opts:["40","42","44","48"],ans:1},
+    {key:'logical',q:"सभी गुलाब फूल हैं। कुछ फूल जल्दी मुरझा जाते हैं। निश्चित रूप से कौन सा निष्कर्ष निकलता है?",opts:["सभी गुलाब जल्दी मुरझाते हैं","कुछ गुलाब जल्दी मुरझाते हैं","कोई गुलाब नहीं मुरझाता","उपरोक्त में से कोई निश्चित निष्कर्ष नहीं"],ans:3},
+    {key:'data',diTable:"पाठ्यक्रम नामांकन:\n\n  वर्ष  | कोर्स A | कोर्स B | कोर्स C\n  ------|---------|---------|--------\n  2021  |   200   |   150   |   100\n  2022  |   240   |   180   |   130\n  2023  |   300   |   210   |   170",q:"2021 से 2023 के बीच किस पाठ्यक्रम में सर्वाधिक प्रतिशत वृद्धि हुई?",opts:["कोर्स A — 50%","कोर्स B — 40%","कोर्स C — 70%","सभी में समान वृद्धि"],ans:2},
+    {key:'ict',q:"इंटरनेट सुरक्षा में 'फिशिंग' का क्या अर्थ है?",opts:["फ़ाइलों तक अनधिकृत पहुँच","संवेदनशील जानकारी प्राप्त करने के लिए धोखाधड़ी","सर्वर को ओवरलोड करना","USB से स्पायवेयर इंस्टॉल करना"],ans:1},
+    {key:'environment',q:"ब्रंटलैंड आयोग (1987) के अनुसार 'सतत विकास' का अर्थ है — वर्तमान ज़रूरतें पूरी करना, बिना ___ की ज़रूरतों से समझौता किए।",opts:["भावी पीढ़ियों","विकसित देशों","प्राकृतिक पारिस्थितिक तंत्र","वर्तमान शहरी आबादी"],ans:0},
+    {key:'highered',q:"भारत में विश्वविद्यालय शिक्षा के मानकों, अनुदान और समन्वय के लिए कौन सी संस्था उत्तरदायी है?",opts:["AICTE","NCTE","UGC","NAAC"],ans:2}
+  ]
+};
+
+const UNITS=[{key:'teaching'},{key:'research'},{key:'comprehension'},{key:'communication'},{key:'mathematical'},{key:'logical'},{key:'data'},{key:'ict'},{key:'environment'},{key:'highered'}];
+
+/* ─── STATE ─────────────────────────────────── */
+let lang='en';
+let currentQ=0, userAnswers=[], dotStates=[];
+
+/* ─── HELPERS ───────────────────────────────── */
+function S(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+
+function setLang(l){
+  lang=l;
+  document.body.classList.toggle('hindi',l==='hi');
+  document.getElementById('btnEN').className='lang-btn'+(l==='en'?' active':'');
+  document.getElementById('btnHI').className='lang-btn'+(l==='hi'?' active':'');
+  const d=T[l];
+
+  S('lHomeSub',d.homeSub);S('lCardName',d.cardName);S('lCardDesc',d.cardDesc);S('lCardBtn',d.cardBtn);
+  const ct=document.getElementById('lCardTags');
+  if(ct){ct.innerHTML='';d.cardTags.forEach(t=>{const s=document.createElement('span');s.className='tag';s.textContent=t;ct.appendChild(s);});}
+
+  S('backBtnQuiz',d.back);S('nextBtn',d.nextBtn);
+
+  S('resultsTitle',d.resultsTitle);
+  S('lblCorrect',d.lblCorrect);S('lblIncorrect',d.lblIncorrect);
+  S('lblAccuracy',d.lblAccuracy);
+  S('lblRadar',d.lblRadar);S('lblBreakdown',d.lblBreakdown);
+  S('strategyTitle',d.strategyTitle);S('strategySub',d.strategySub);
+  S('ctaTitle',d.ctaTitle);S('ctaSub',d.ctaSub);S('ctaBtn',d.ctaBtn);
+
+  // If results page is currently shown, re-render to refresh language
+  if(!document.getElementById('results').classList.contains('hidden')){
+    renderResults();
+  }
+  if(!document.getElementById('quiz').classList.contains('hidden')&&userAnswers.length){
+    loadQuestion(currentQ);
+  }
+  saveState();
+}
+
+/* ─── NAV ───────────────────────────────────── */
+function show(id){
+  ['home','quiz','results'].forEach(p=>document.getElementById(p).classList.toggle('hidden',p!==id));
+  window.scrollTo(0,0);
+}
+function goHome(){show('home');}
+
+/* ─── QUIZ ──────────────────────────────────── */
+function startQuiz(){
+  clearState();
+  currentQ=0;
+  userAnswers=Array(QB[lang].length).fill(null);
+  dotStates=Array(QB[lang].length).fill(null);
+  buildDots(QB[lang].length);
+  show('quiz');
+  loadQuestion(0);
+}
+
+function buildDots(n){
+  const r=document.getElementById('dotRow');r.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='dot';d.id='dot_'+i;r.appendChild(d);}
+}
+
+function loadQuestion(idx){
+  const qs=QB[lang],q=qs[idx];
+  const uIdx=UNITS.findIndex(u=>u.key===q.key);
+  const d=T[lang];
+  document.getElementById('qUnitKey').textContent=`${d.unitOf} ${uIdx+1} ${d.unitOfSuffix}`;
+  document.getElementById('qUnitLabel').textContent=d.unitLabels[uIdx];
+  document.getElementById('progressText').textContent=`${d.qOf} ${idx+1} ${d.qOfSuffix} ${qs.length}`;
+  const pct=Math.round((idx/qs.length)*100);
+  document.getElementById('progressPct').textContent=pct+'%';
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('qCounter').textContent=`${idx+1} / ${qs.length}`;
+  document.getElementById('passageArea').innerHTML=q.passage?`<div class="passage-box">${q.passage}</div>`:'';
+  document.getElementById('diTableArea').innerHTML=q.diTable?`<div class="di-table-box">${q.diTable}</div>`:'';
+  document.getElementById('qText').textContent=q.q;
+  const oa=document.getElementById('optionsArea');oa.innerHTML='';
+  ['A','B','C','D'].forEach((L,i)=>{
+    const b=document.createElement('button');b.className='opt-btn';b.id='opt_'+i;
+    b.innerHTML=`<span class="opt-letter">${L}</span><span class="opt-text">${q.opts[i]}</span>`;
+    b.onclick=()=>selectAnswer(i);
+    oa.appendChild(b);
+  });
+  // Restore previous selection if any
+  const prev=userAnswers[currentQ];
+  if(prev!==null&&prev!==undefined&&prev!==-1){
+    const sb=document.getElementById('opt_'+prev);
+    if(sb)sb.classList.add('selected');
+    document.getElementById('nextBtn').classList.remove('hidden');
+  } else {
+    document.getElementById('nextBtn').classList.add('hidden');
+  }
+}
+
+function selectAnswer(idx){
+  userAnswers[currentQ]=idx;
+  const q=QB[lang][currentQ];
+  dotStates[currentQ]={selected:idx, correct:q.ans, isRight:idx===q.ans};
+  document.querySelectorAll('.opt-btn').forEach((b,i)=>{
+    b.classList.remove('selected');
+    if(i===idx) b.classList.add('selected');
+  });
+  const dot=document.getElementById('dot_'+currentQ);
+  if(dot)dot.classList.add('answered-dot');
+  document.getElementById('nextBtn').classList.remove('hidden');
+  saveState();
+}
+
+function nextQuestion(){
+  saveState();
+  if(currentQ<QB[lang].length-1){currentQ++;loadQuestion(currentQ);}
+  else finishQuiz();
+}
+function finishQuiz(){show('results');renderResults();saveState();}
+
+/* ─── RESULTS ───────────────────────────────── */
+function renderResults(){
+  const qs=QB['en']; // always score against EN answer keys
+  const ua=userAnswers;
+  const correct=ua.filter((a,i)=>a===qs[i].ans).length;
+  const pct=Math.round((correct/qs.length)*100);
+  const d=T[lang];
+
+  document.getElementById('scoreCorrect').textContent=correct;
+  document.getElementById('scoreWrong').textContent=qs.length-correct;
+  document.getElementById('scorePct').textContent=pct+'%';
+  document.getElementById('resultsSub').textContent=
+    pct>=70?d.subHigh:pct>=50?d.subMid:d.subLow;
+
+  const us={};
+  UNITS.forEach(u=>{us[u.key]={correct:0,total:0};});
+  qs.forEach((q,i)=>{us[q.key].total++;if(ua[i]===q.ans)us[q.key].correct++;});
+
+  // Unit breakdown
+  const bl=document.getElementById('breakdownList');bl.innerHTML='';
+  const wArr=[];
+  UNITS.forEach((u,i)=>{
+    const s=us[u.key];if(!s.total)return;
+    const p=Math.round((s.correct/s.total)*100);
+    if(p<50)wArr.push({key:u.key,label:d.unitLabels[i],pct:p});
+    const color=p<50?'var(--crimson)':p<75?'var(--gold)':'#2ecc71';
+    const row=document.createElement('div');row.className='unit-row';
+    row.innerHTML=`
+      <span class="unit-name">${d.unitLabels[i]}</span>
+      <div class="unit-bar-wrap"><div class="unit-bar" id="bar_${u.key}" style="width:0%;background:${color}"></div></div>
+      <span class="unit-score">${s.correct}/${s.total}</span>
+      <span>${p<50?`<span class="weak-tag">${d.weakTag}</span>`:p===100?`<span class="strong-tag">${d.strongTag}</span>`:''}</span>`;
+    bl.appendChild(row);
+    setTimeout(()=>{const b=document.getElementById('bar_'+u.key);if(b)b.style.width=p+'%';},160);
+  });
+
+  // Weak zones
+  const wa=document.getElementById('weaknessAlert');
+  if(wArr.length===0){
+    wa.style.cssText='background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.25);border-radius:14px;padding:22px 26px;margin-bottom:24px;';
+    wa.innerHTML=`<h3 style="color:#2ecc71;font-family:Playfair Display,serif;font-size:1rem;">${d.noWeak}</h3>`;
+  } else {
+    wa.style.cssText='background:rgba(224,80,80,.07);border:1px solid rgba(224,80,80,.25);border-radius:14px;padding:22px 26px;margin-bottom:24px;';
+    let html=`<h3 style="color:var(--crimson);font-family:Playfair Display,serif;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;">${d.weakTitle}</h3><ul class="weakness-list">`;
+    wArr.sort((a,b)=>a.pct-b.pct).forEach(({key,label,pct})=>{
+      html+=`<li><span><strong>${label}</strong> (${pct}%) — ${d.actionTips[key].tip}</span></li>`;
+    });
+    html+='</ul>';
+    wa.innerHTML=html;
+  }
+
+  // Merged 45+ Strategy + Personalised Action Plan
+  const ranked=UNITS.map((u,i)=>{
+    const s=us[u.key];const p=s&&s.total?Math.round((s.correct/s.total)*100):0;
+    return {key:u.key,label:d.unitLabels[i],pct:p,score:`${s.correct}/${s.total}`};
+  }).sort((a,b)=>a.pct-b.pct);
+
+  const al=document.getElementById('actionList');al.innerHTML='';
+  ranked.forEach((u,i)=>{
+    const priority=i<3?'high':i<7?'medium':'maintain';
+    const pillLabel=priority==='high'?d.priHigh:priority==='medium'?d.priMed:d.priMaintain;
+    const tips=d.actionTips[u.key];
+    const li=document.createElement('li');
+    li.className='action-item '+priority;
+    li.innerHTML=`
+      <div class="action-rank">${String(i+1).padStart(2,'0')}</div>
+      <div class="action-body">
+        <div class="action-head">
+          <span class="action-name">${u.label}</span>
+          <span class="action-pill ${priority}">${pillLabel}</span>
+        </div>
+        <div class="action-score">${u.score} · ${u.pct}%</div>
+        <p class="action-strategy" style="margin-top:8px;">${tips.strat}</p>
+        <p class="action-tip">→ ${tips.tip}</p>
+      </div>`;
+    al.appendChild(li);
+  });
+
+  drawRadar(us);
+  if(pct>=70)launchConfetti();
+}
+
+function drawRadar(us){
+  const canvas=document.getElementById('radarChart');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,R=Math.min(W,H)*0.32,n=UNITS.length;
+  ctx.clearRect(0,0,W,H);
+  const A=UNITS.map((_,i)=>(Math.PI*2*i/n)-Math.PI/2);
+  [.25,.5,.75,1].forEach(f=>{
+    ctx.beginPath();
+    A.forEach((a,i)=>{const x=cx+R*f*Math.cos(a),y=cy+R*f*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.closePath();ctx.strokeStyle=`rgba(232,160,32,${f===1?.2:.06})`;ctx.lineWidth=1;ctx.stroke();
+  });
+  A.forEach(a=>{ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(232,160,32,.09)';ctx.lineWidth=1;ctx.stroke();});
+  const sc=UNITS.map(u=>{const s=us[u.key];return s&&s.total?s.correct/s.total:0;});
+  ctx.beginPath();A.forEach((a,i)=>{const x=cx+R*sc[i]*Math.cos(a),y=cy+R*sc[i]*Math.sin(a);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.closePath();ctx.fillStyle='rgba(232,160,32,.15)';ctx.fill();ctx.strokeStyle='rgba(232,160,32,.7)';ctx.lineWidth=2;ctx.stroke();
+  A.forEach((a,i)=>{const x=cx+R*sc[i]*Math.cos(a),y=cy+R*sc[i]*Math.sin(a);ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fillStyle=sc[i]<.5?'#e05050':sc[i]<.75?'#e8a020':'#2ecc71';ctx.fill();});
+  const sh=T[lang].unitShort;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  A.forEach((a,i)=>{
+    const lx=cx+(R+28)*Math.cos(a),ly=cy+(R+28)*Math.sin(a),p=Math.round(sc[i]*100);
+    ctx.font='600 8px sans-serif';ctx.fillStyle=sc[i]<.5?'#e05050':'#e8e4d8';ctx.fillText(sh[i],lx,ly-5);
+    ctx.font='500 7px monospace';ctx.fillStyle=sc[i]<.5?'#e05050':'rgba(232,160,32,.85)';ctx.fillText(p+'%',lx,ly+6);
+  });
+  const ov=sc.reduce((a,b)=>a+b,0)/sc.length;
+  ctx.font='bold 18px serif';ctx.fillStyle=ov<.5?'#e05050':'#e8a020';
+  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(Math.round(ov*100)+'%',cx,cy-6);
+  ctx.font='500 9px sans-serif';ctx.fillStyle='rgba(232,160,32,.55)';ctx.fillText(T[lang].overallLabel,cx,cy+12);
+}
+
+function launchConfetti(){
+  const w=document.createElement('div');w.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:999;';document.body.appendChild(w);
+  const c=['#e8a020','#f5c055','#3abfb1','#8b6fd4','#2ecc71','#e05050'];
+  for(let i=0;i<60;i++){
+    const d=document.createElement('div');const sz=6+Math.random()*6;
+    d.style.cssText=`position:absolute;left:${Math.random()*100}%;top:-20px;width:${sz}px;height:${sz}px;background:${c[Math.floor(Math.random()*c.length)]};border-radius:${Math.random()>.5?'50%':'0'};animation:confettiFall ${1.5+Math.random()*2}s ease-in forwards;animation-delay:${Math.random()*1.5}s;`;
+    w.appendChild(d);
+  }
+  setTimeout(()=>w.remove(),5000);
+}
+
+/* ─── LOCALSTORAGE PERSISTENCE ───────────────── */
+const LS_KEY='ugcnet_state';
+
+function saveState(){
+  try{
+    const state={
+      lang,currentQ,userAnswers,dotStates,
+      page: document.getElementById('results').classList.contains('hidden')?
+            (document.getElementById('quiz').classList.contains('hidden')?'home':'quiz'):'results'
+    };
+    localStorage.setItem(LS_KEY,JSON.stringify(state));
+  }catch(e){}
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(!raw)return false;
+    const state=JSON.parse(raw);
+    if(!state||!state.userAnswers||!state.userAnswers.length)return false;
+
+    lang=state.lang||'en';
+    setLang(lang);
+
+    userAnswers=state.userAnswers;
+    dotStates=state.dotStates||[];
+
+    if(state.page==='results'){
+      show('results');
+      renderResults();
+      return true;
+    } else if(state.page==='quiz'){
+      currentQ=state.currentQ||0;
+      buildDots(QB[lang].length);
+      show('quiz');
+      dotStates.forEach((ds,i)=>{
+        if(!ds)return;
+        const dot=document.getElementById('dot_'+i);
+        if(dot)dot.classList.add('answered-dot');
+      });
+      loadQuestion(currentQ);
+      if(userAnswers[currentQ]!==null&&userAnswers[currentQ]!==-1){
+        const sel=userAnswers[currentQ];
+        setTimeout(()=>{
+          document.querySelectorAll('.opt-btn').forEach((b,i)=>{
+            b.classList.remove('selected');
+            if(i===sel)b.classList.add('selected');
+          });
+          document.getElementById('nextBtn').classList.remove('hidden');
+        },50);
+      }
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+function clearState(){
+  try{localStorage.removeItem(LS_KEY);}catch(e){}
+}
+
+/* ─── INIT ──────────────────────────────────── */
+setLang('en');
+if(!loadState()){
+  show('home');
+}
+</script>
+</body>
+</html>
