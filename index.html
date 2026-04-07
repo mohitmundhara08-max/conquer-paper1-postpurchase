@@ -130,6 +130,58 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .cta-btn:hover{transform:scale(1.04);box-shadow:0 10px 30px rgba(232,160,32,.35);}
 
 @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+
+/* ── MOBILE & SMALL SCREENS ── */
+@media(max-width:640px){
+  .lang-toggle{top:12px;right:12px;padding:3px;}
+  .lang-btn{padding:6px 14px;font-size:11px;}
+  #home{padding:80px 18px 60px;}
+  .home-header{margin-bottom:32px;}
+  .badge{font-size:10px;padding:5px 14px;letter-spacing:1.5px;}
+  .home-title{font-size:1.85rem;}
+  .home-sub{font-size:14px;}
+  .single-card{padding:28px 22px;}
+  .card-icon{width:50px;height:50px;font-size:22px;margin-bottom:18px;}
+  .card-name{font-size:1.3rem;}
+  .card-desc{font-size:13px;}
+  #quiz{padding:20px 16px 50px;}
+  .quiz-unit-name{font-size:.95rem;}
+  .question-card{padding:22px 18px;}
+  .q-text{font-size:15px;}
+  .opt-btn{padding:12px 14px;}
+  .opt-text{font-size:13.5px;}
+  .passage-box{font-size:13px;padding:12px 14px;}
+  .di-table-box{font-size:11px;padding:12px 14px;}
+  #results{padding:30px 16px 60px;}
+  .results-title{font-size:1.5rem;}
+  .results-sub{font-size:13px;margin-bottom:26px;}
+  .score-hero{gap:10px;margin-bottom:28px;}
+  .score-card{padding:14px 12px;min-width:0;flex:1 1 calc(33.333% - 8px);}
+  .score-val{font-size:1.7rem;}
+  .score-lbl{font-size:10px;}
+  .chart-card,.breakdown-card{padding:20px 18px;}
+  #radarChart{max-width:100%;height:auto;}
+  .unit-name{font-size:11.5px;}
+  .weakness-alert{padding:18px 20px;}
+  .weakness-list li{font-size:13px;}
+  .section-card{padding:22px 18px;}
+  .section-title{font-size:1.1rem;}
+  .section-sub{font-size:12.5px;}
+  .action-item{padding:14px 14px;gap:10px;}
+  .action-rank{font-size:1.25rem;min-width:26px;}
+  .action-name{font-size:13px;}
+  .action-strategy{font-size:12.5px;}
+  .action-tip{font-size:11.5px;}
+  .cta-box{padding:28px 20px;}
+  .cta-title{font-size:1.25rem;}
+  .cta-sub{font-size:13px;}
+  .cta-btn{padding:14px 28px;font-size:14px;width:100%;}
+}
+@media(max-width:380px){
+  .home-title{font-size:1.6rem;}
+  .score-val{font-size:1.45rem;}
+  .results-title{font-size:1.35rem;}
+}
 </style>
 </head>
 <body>
@@ -206,7 +258,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="results-grid">
     <div class="chart-card">
       <div class="chart-title" id="lblRadar"></div>
-      <canvas id="radarChart" width="260" height="260"></canvas>
+      <canvas id="radarChart" width="260" height="260" style="max-width:100%;height:auto;"></canvas>
     </div>
     <div class="breakdown-card">
       <div class="chart-title" id="lblBreakdown"></div>
