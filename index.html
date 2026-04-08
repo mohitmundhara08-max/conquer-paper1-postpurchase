@@ -269,6 +269,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <!-- 3. Weak Zones -->
   <div id="weaknessAlert" class="weakness-alert"></div>
 
+  <!-- 3b. Inline CTA -->
+  <div style="text-align:center;margin:-4px 0 28px;">
+    <a class="cta-btn" id="ctaBtnInline" href="https://testbook.com/" target="_blank" rel="noopener noreferrer"></a>
+  </div>
+
   <!-- 4. 45+ Marks Strategy (merged with personalised action plan) -->
   <div class="section-card">
     <h2 class="section-title" id="strategyTitle"></h2>
@@ -280,7 +285,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <div class="cta-box">
     <h2 class="cta-title" id="ctaTitle"></h2>
     <p class="cta-sub" id="ctaSub"></p>
-    <a class="cta-btn" id="ctaBtn" href="https://link.testbook.com/3Av1hai281b" target="_blank" rel="noopener noreferrer"></a>
+    <a class="cta-btn" id="ctaBtn" href="https://testbook.com/" target="_blank" rel="noopener noreferrer"></a>
   </div>
 </div>
 
@@ -384,7 +389,7 @@ const QB={
   hi:[
     {key:'teaching',q:"कौन सी शिक्षण विधि व्यवस्थित प्रश्नों के माध्यम से छात्रों को स्वयं के तर्क से ज्ञान की ओर ले जाती है?",opts:["व्याख्यान विधि","सुकराती विधि","प्रदर्शन विधि","ड्रिल विधि"],ans:1},
     {key:'research',q:"अनुसंधान में परिकल्पना को सबसे उचित रूप में किस प्रकार परिभाषित किया जाता है?",opts:["एक सिद्ध वैज्ञानिक तथ्य","एक अस्थायी कथन जिसे परीक्षण के अधीन किया जाता है","प्रकाशित डेटा से निकाला गया निष्कर्ष","एक अंतिम शोध पद्धति"],ans:1},
-    {key:'comprehension',passage:"शिक्षा केवल ज्ञान का अर्जन नहीं है, बल्कि सोचने, तर्क करने और उस ज्ञान को वास्तविक परिस्थितियों में लागू करने की क्षमता है। अरस्तू का मानना था कि शिक्षा का उद्देश्य व्यक्तियों को सदाचारी बनाना है।",q:"गद्यांश के अनुसार, अरस्तू का शिक्षा पर मुख्य दृष्टिकोण क्या था?",opts:["अधिकतम ज्ञान अर्जित करना","व्यक्तियों को सदाचारी और सामाजिक जीवन के योग्य बनाना","रचनात्मकता और सहयोग विकसित करना","शिक्षा को बदलती दुनिया के अनुकूल बनाना"],ans:1},
+    {key:'comprehension',passage:"शिक्षा केवल ज्ञान का अर्जन नहीं है, बल्कि सोचने, तर्क करने और उस ज्ञान को वास्तविक परिस्थितियों में लागू करने की क्षमता है। अरस्तू का मानना था कि शिक्षा का उद्देश्य व्यक्तियों को सदाचारी बनाना है, ताकि वे समाज में एक-दूसरे के साथ मिलकर रह सकें और कार्य कर सकें। आधुनिक शिक्षाविदों का तर्क है कि शिक्षा को तेज़ी से बदलती दुनिया के अनुकूल होना चाहिए, जिसमें आलोचनात्मक सोच, रचनात्मकता और सहयोग पर ज़ोर दिया गया हो। इन क्षमताओं के बिना, स्नातक 21वीं सदी की जटिल चुनौतियों का सामना करने में असमर्थ हो सकते हैं।",q:"गद्यांश के अनुसार, अरस्तू का शिक्षा पर मुख्य दृष्टिकोण क्या था?",opts:["अधिकतम ज्ञान अर्जित करना","व्यक्तियों को सदाचारी और सामाजिक जीवन के योग्य बनाना","रचनात्मकता और सहयोग विकसित करना","शिक्षा को बदलती दुनिया के अनुकूल बनाना"],ans:1},
     {key:'communication',q:"किसी संदेश को प्रतीकों, शब्दों या हाव-भाव में बदलकर भेजने की प्रक्रिया को क्या कहते हैं?",opts:["डिकोडिंग","फीडबैक","एन्कोडिंग","चैनल चयन"],ans:2},
     {key:'mathematical',q:"श्रृंखला में अगली संख्या क्या होगी: 2, 6, 12, 20, 30, ___?",opts:["40","42","44","48"],ans:1},
     {key:'logical',q:"सभी गुलाब फूल हैं। कुछ फूल जल्दी मुरझा जाते हैं। निश्चित रूप से कौन सा निष्कर्ष निकलता है?",opts:["सभी गुलाब जल्दी मुरझाते हैं","कुछ गुलाब जल्दी मुरझाते हैं","कोई गुलाब नहीं मुरझाता","उपरोक्त में से कोई निश्चित निष्कर्ष नहीं"],ans:3},
@@ -422,7 +427,7 @@ function setLang(l){
   S('lblAccuracy',d.lblAccuracy);
   S('lblRadar',d.lblRadar);S('lblBreakdown',d.lblBreakdown);
   S('strategyTitle',d.strategyTitle);S('strategySub',d.strategySub);
-  S('ctaTitle',d.ctaTitle);S('ctaSub',d.ctaSub);S('ctaBtn',d.ctaBtn);
+  S('ctaTitle',d.ctaTitle);S('ctaSub',d.ctaSub);S('ctaBtn',d.ctaBtn);S('ctaBtnInline',d.ctaBtn);
 
   // If results page is currently shown, re-render to refresh language
   if(!document.getElementById('results').classList.contains('hidden')){
