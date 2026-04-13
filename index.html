@@ -271,7 +271,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 
   <!-- 3b. Inline CTA -->
   <div style="text-align:center;margin:-4px 0 28px;">
-    <a class="cta-btn" id="ctaBtnInline" href="https://link.testbook.com/ugdu5Ld2b2b" target="_blank" rel="noopener noreferrer"></a>
+    <a class="cta-btn" id="ctaBtnInline" href="https://testbook.com/" target="_blank" rel="noopener noreferrer"></a>
   </div>
 
   <!-- 4. 45+ Marks Strategy (merged with personalised action plan) -->
@@ -444,10 +444,11 @@ function show(id){
   ['home','quiz','results'].forEach(p=>document.getElementById(p).classList.toggle('hidden',p!==id));
   window.scrollTo(0,0);
 }
-function goHome(){show('home');}
+function goHome(){if(isSubmitted()){show('results');renderResults();return;}show('home');}
 
 /* ─── QUIZ ──────────────────────────────────── */
 function startQuiz(){
+  if(isSubmitted()){show('results');renderResults();return;}
   clearState();
   currentQ=0;
   userAnswers=Array(QB[lang].length).fill(null);
@@ -513,7 +514,7 @@ function nextQuestion(){
   if(currentQ<QB[lang].length-1){currentQ++;loadQuestion(currentQ);}
   else finishQuiz();
 }
-function finishQuiz(){show('results');renderResults();saveState();}
+function finishQuiz(){markSubmitted();show('results');renderResults();saveState();}
 
 /* ─── RESULTS ───────────────────────────────── */
 function renderResults(){
@@ -639,6 +640,14 @@ function launchConfetti(){
 
 /* ─── LOCALSTORAGE PERSISTENCE ───────────────── */
 const LS_KEY='ugcnet_state';
+const LS_DONE_KEY='ugcnet_submitted';
+
+function isSubmitted(){
+  try{return localStorage.getItem(LS_DONE_KEY)==='1';}catch(e){return false;}
+}
+function markSubmitted(){
+  try{localStorage.setItem(LS_DONE_KEY,'1');}catch(e){}
+}
 
 function saveState(){
   try{
@@ -700,7 +709,19 @@ function clearState(){
 
 /* ─── INIT ──────────────────────────────────── */
 setLang('en');
-if(!loadState()){
+if(isSubmitted()){
+  // Hard lock: always land on results, regardless of what they try
+  if(!loadState()){
+    // State missing but flag set (very edge case) — still try to show empty results
+    show('results');
+  } else {
+    // loadState already showed a page; if it wasn't results, override
+    if(document.getElementById('results').classList.contains('hidden')){
+      show('results');
+      renderResults();
+    }
+  }
+} else if(!loadState()){
   show('home');
 }
 </script>
