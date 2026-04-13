@@ -436,7 +436,8 @@ function setLang(l){
   if(!document.getElementById('quiz').classList.contains('hidden')&&userAnswers.length){
     loadQuestion(currentQ);
   }
-  saveState();
+  // Only persist if there's real user progress — never overwrite during init
+  if(userAnswers&&userAnswers.length)saveState();
 }
 
 /* ─── NAV ───────────────────────────────────── */
